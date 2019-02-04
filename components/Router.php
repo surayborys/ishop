@@ -1,8 +1,9 @@
 <?php
 /**
- * router class
+ * router class  
  */
 
+###################################DEV MODE###############################
 class Router 
 {
     //stores declared rotes 
@@ -11,7 +12,7 @@ class Router
     private $localSettings;
     /**
      * assigns to @var $routes declared routes
-     * assigns to $var $localSettings local settings
+     * assigns to @var $localSettings local settings
      * @return bool 
      */
     public function __construct() {
@@ -19,10 +20,6 @@ class Router
         $this->routes = include($pathToRoutes);
         $pathToLocal = ROOT . '/config/local.php';
         $this->localSettings = include($pathToLocal);
-        
-        echo '<pre>';
-        print_r($this->routes);
-        echo '</pre>';
     }
     
     /**
@@ -43,16 +40,21 @@ class Router
     }
     
     /**
-     * takes string with user query and returns array ['controller' => 'ControllerName', 'action' => 'actionName']
+     * takes string with user query and returns array 
+     * ['controller' => 'ControllerName', 'action' => 'actionName', 'params' => []]
      * 
      * @param string $address
      * @return array
      */
     private function processAddress(string $address):array {
         $explodedAddress = explode('/', $address);
+        
         $result = array();
+                
         $result['controller'] = ucfirst(array_shift($explodedAddress)) . 'Controller';
         $result['action'] = 'action' . ucfirst(array_shift($explodedAddress));
+        $result['params'] = $explodedAddress;
+        
         return $result;
     }
 
@@ -60,19 +62,21 @@ class Router
     /**
      * takes query string from input and runs determined action and controller
      * 
-     * @param string $address
+     * @param string $internalRoot
      * @return boolean
      */
-    private function runAction(string $address) {
-        $querySegmentsArray = $this->processAddress($address);
+    private function runAction(string $internalRoot) {
+        $querySegmentsArray = $this->processAddress($internalRoot);
         $controller = $querySegmentsArray['controller'];
         $action = $querySegmentsArray['action'];
+        $params = $querySegmentsArray['params'];
         
         $controllerFile = ROOT . '/controllers/' . $controller . '.php';
         if(file_exists($controllerFile)) {
             require_once ROOT . '/controllers/' . $controller . '.php';
             $controllerObj = new $controller;
-            $controllerObj->{$action}();
+            
+            call_user_func_array(array($controllerObj, $action), $params);
             return true;
         }
         return false;          
@@ -98,10 +102,10 @@ class Router
         //loop through the routes and find matches
         foreach ($this->routes as $pattern=>$address) {
             if(preg_match("%^$pattern$%", $uri)) {
-                echo 'query: ' . $uri . '<br>';
-                echo 'matches: ' . $address . '<br>';
-                
-                $this->runAction($address);
+                               
+                //replace pattern submasks with values from request uri 
+                $internalRoute = preg_replace("%$pattern%", $address, $uri);
+                $this->runAction($internalRoute);
           
                 $matches = true; //set flag to TRUE: route finded
                 break;
