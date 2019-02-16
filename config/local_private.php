@@ -4,7 +4,7 @@
 
 return [
     'mysql_host' => 'localhost',
-    'mysql_dbname' => 'test',
+    'mysql_dbname' => 'shop',
     'mysql_user' => 'root',
     'mysql_password' => 'root',
 ];
