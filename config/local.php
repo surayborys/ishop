@@ -8,6 +8,7 @@ return [
     'pathToIndex' => '',
     'pathToHeader' => ROOT . '/views/layouts/header.php',
     'pathToFooter' => ROOT . '/views/layouts/footer.php',
+    'pathToFilter' => ROOT . '/views/layouts/filter.php',
     'indexRoute' => 'site/index',
     '_404Route' => 'main/404',
     

@@ -114,7 +114,7 @@ class Category {
      * @return boolean|array
      */
     public static function getCategoryById(int $id) {
-
+        
         $con = DbConnect::connect();
 
         $query = 'SELECT * from category WHERE id = :id';
@@ -132,8 +132,12 @@ class Category {
             $category['title'] = $row['title'];
             $category['range_order'] = $row['range_order'];
             $category['is_final'] = $row['is_final'];
+            if ($category['is_final'] == 0) {
+                $category['childs'] = self::getSubcatIds($category['id']);
+            }
 
             return $category;
+            
 
         endif;
         return 0;

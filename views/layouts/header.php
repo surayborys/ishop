@@ -25,6 +25,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'><!--//fonts-->
         <!-- start menu -->
         <link href="/web/css/memenu.css" rel="stylesheet" type="text/css" media="all" />
+        
+            <link href="/web/css/accordion.css" rel="stylesheet" type="text/css" media="all" />
+        
         <script type="text/javascript" src="/web/js/memenu.js"></script>
         <script>$(document).ready(function () {
         $(".memenu").memenu();

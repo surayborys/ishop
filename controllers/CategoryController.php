@@ -35,4 +35,20 @@ class CategoryController extends BaseController {
         //include view
         include_once ROOT . '/views/category/index.php';
     }
+    
+    public function actionView(string $mainName, int $id) {
+        
+        //get data from models
+        $activeCategory = Category::getCategoryByName($mainName);
+        $mainCategories = Category::getMainCategories();
+        $brands = Brand::getBrandsList();
+        $pre_products = Product::getProductsByCategoryWithinMainCategory($id, $mainName);
+        
+        //optimize array with products to the layout requirements
+        $elementsInRow = 3;
+        $products = $this->delimitArrayForLayout($elementsInRow, $pre_products);
+        
+        //include view
+        include_once ROOT . '/views/category/index.php';
+    }
 }

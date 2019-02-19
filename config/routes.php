@@ -12,7 +12,7 @@ return [
     
     ##########I_SHOP ROUTES##############
     'category/([a-zA-Z0-9]+)' => 'category/index/$1',
-    'category/([a-zA-Z0-9]+)/([0-9])+' => 'category/view/$1/$2',
+    'category/([a-zA-Z0-9]+)/([0-9]+)' => 'category/view/$1/$2',
     
     'product/([0-9]+)' => 'product/index/$1',
 ];
