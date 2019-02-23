@@ -1,5 +1,5 @@
 <?php
-
+namespace Controllers;
 
 /**
  * Base Controller Class
@@ -11,7 +11,7 @@ abstract class BaseController {
     //stores local settings
     protected $localSettings;
     /**
-     * do child classes to describe __controllerConstruct() function
+     * make child classes to describe __controllerConstruct() function
      * if they do not need this - just return true in this function
      */
     

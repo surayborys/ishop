@@ -1,5 +1,8 @@
 <?php
+namespace Models;
 
+use Components\DbConnect;
+use PDO;
 /**
  * A model for the 'category' table
  *
@@ -185,5 +188,39 @@ class Category {
         //recursively call to the getHierarchy() method
         return self::getHierarchy($parent_category['id'], $hieraArray);
     }
+    
+    /**
+     * returns an array of ids of final categories for the current category by its id
+     * 
+     * @param int $id
+     * @param array $finalCategoriesIds
+     * @return boolean|array    
+     */
+    public static function getFinalCategoriesIds(int $id, $finalCategoriesIds = array()) {
+        
+        $con = DbConnect::connect();    
+
+        //return false if the category hasn't been found
+        $category = self::getCategoryById($id);
+        if (!$category) {
+            return false;
+        }
+        
+        //determine the output condition
+        if($category['is_final'] == 1) {
+            $finalCategoriesIds[] = $category['id'];
+            return $finalCategoriesIds;
+        }
+        
+        //loop through the array of subcategories and grab the final categories
+        if($category['childs']):
+            foreach ($category['childs'] as $subcategory) {
+                if($new_id = self::getFinalCategoriesIds($subcategory['id'], $finalCategoriesIds)){
+                    $finalCategoriesIds = array_merge($finalCategoriesIds, $new_id);
+                }
+            }
+            return is_array($finalCategoriesIds) ? (array_unique($finalCategoriesIds)) : false;
+        endif;    
+    } 
 
 }

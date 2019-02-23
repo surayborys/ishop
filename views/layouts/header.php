@@ -82,7 +82,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     $activeTitle = false;
                             ?>
                             <?php foreach ($mainCategories as $mainCategory):?>
-                            <li <?php print(($activeTitle)&&($activeTitle == $mainCategory['title'])) ? 'class="active"' : '';?> ><a class="color1" href="/category/<?=$mainCategory['title'];?>"><?=$mainCategory['title'];?></a>
+                            <li <?php print(($activeTitle)&&($activeTitle == $mainCategory['title'])) ? 'class="active"' : '';?> ><a class="color1" href="/category/<?=$mainCategory['title'];?>/page-1"><?=$mainCategory['title'];?></a>
                                 <div class="mepanel">
                                     <div class="row">
                                         <div class="col1">
@@ -90,7 +90,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                 <ul>
                                                     <?php foreach ($mainCategory['subcategories'] as $subcategory ):?>
                                                     <li>
-                                                        <a href="/category/<?=$mainCategory['title'];?>/<?=$subcategory['id'];?>"><?=$subcategory['title'];?></a>
+                                                        <a href="/category/<?=$mainCategory['title'];?>/<?=$subcategory['id'];?>/page-1"><?=$subcategory['title'];?></a>
                                                     </li>
                                                     <?php endforeach;?>
                                                 </ul>	

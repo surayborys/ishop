@@ -1,5 +1,6 @@
 <?php
 
+
 //FRONT CONTROLLER
 
 #1 common options
@@ -20,11 +21,10 @@ error_reporting(E_ALL);
  */
 define('ROOT', dirname(__FILE__));
 
-//connect to Router
-require_once ROOT.'/components/Router.php';
+require_once ROOT.'/vendor/autoload.php';
+use Components\Router; 
+use Components\DbConnect;
 
-//connect to DB
-require_once ROOT . '/components/DbConnect.php';
 
 //call Router
 $router = new Router();

@@ -1,11 +1,8 @@
 <?php
+namespace Components;
+use PDO;
 
 
-/**
- * Class for connection to database
- *
- * @author suray
- */
 class DbConnect {
     
     /**

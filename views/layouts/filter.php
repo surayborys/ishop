@@ -18,10 +18,10 @@
 
             function createMenu(array $category, array $activeCategory) {
                 if ($category['is_final'] == 1) {
-                    echo '<li><a href="/category/' . $activeCategory['title'] . '/' . $category['id'] . '">' . $category['title'] . '</a></li>';
+                    echo '<li><a href="/category/' . $activeCategory['title'] . '/' . $category['id'] . '/page-1' .'">' . $category['title'] . '</a></li>';
                     return true;
                 }
-                echo '<li><a href="/category/' . $activeCategory['title'] . '/' . $category['id'] . '">' . $category['title'] . '</a>';
+                echo '<li><a href="/category/' . $activeCategory['title'] . '/' . $category['id'] . '/page-1' .'">' . $category['title'] . '</a>';
                 echo '<ul class="spec">';
                 foreach ($category['childs'] as $subcategory) {
                     createMenu($subcategory, $activeCategory);

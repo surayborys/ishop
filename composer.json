@@ -1,0 +1,17 @@
+{
+    "name": "test/eshop",
+    "description": "training project: e-shop",
+    "type": "project",
+    "license": "free",
+    "minimum-stability": "dev",
+    "require": {
+        "jasongrimes/paginator": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "controllers",
+            "Models\\": "models",
+            "Components\\": "components"
+        }
+    }
+}

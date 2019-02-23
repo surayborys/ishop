@@ -1,5 +1,8 @@
 <?php
+namespace Models;
 
+use Components\DbConnect;
+use PDO;
 /**
  * A model class for the 'brand' table
  *
@@ -7,8 +10,20 @@
  */
 class Brand {
     
+    /**
+     * gets all the records from the 'brand' table
+     * 
+     * @return array|boolean
+     */
     public static function getBrandsList() {
         $con = DbConnect::connect();
+        
+        $checkQuery = 'SELECT count(*) FROM brand WHERE true';
+        if($result = $con->query($checkQuery)){
+            if($result->fetchColumn() < 1){
+                return false;
+            }       
+        }
         
         $query = 'SELECT * from brand WHERE true';
         $result = $con->query($query);
@@ -24,6 +39,6 @@ class Brand {
                         
             $i++;    
         }
-        return $brands;
+        return is_array($brands) ? $brands : false;
     }
 }

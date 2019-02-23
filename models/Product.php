@@ -1,6 +1,9 @@
 <?php
+namespace Models;
 
-include_once ROOT . '/models/Category.php';
+use Components\DbConnect;
+use Models\Category;
+use PDO;
 
 /**
  * A model for the 'product' table
@@ -8,9 +11,8 @@ include_once ROOT . '/models/Category.php';
  * @author suray
  */
 class Product {
-
     /**
-     * to get products from the product table, that are NEW (new = 1)
+     * gets new products from the product table (is_new = 1)
      * 
      * @param int $limit
      * @return array
@@ -81,19 +83,25 @@ class Product {
      * @param string $name
      * @return array|boolean
      */
-    public static function getProductsByMainCategoryName(string $name) {
-
+    public static function getProductsByMainCategoryName(string $name, int $pageNum = 1) {
         $con = DbConnect::connect();
+        
+        $productsInRow = 3;
+        $offset = ($pageNum-1)*$productsInRow;
 
         $query = 'SELECT product.*, category.title AS main_cat_title '
                 . 'FROM product INNER JOIN category '
                 . 'ON product.main_category_id = category.id '
-                . 'WHERE category.title = :name';
-
+                . 'WHERE category.title = :name LIMIT :limit OFFSET :offset';
+        
         $sth = $con->prepare($query);
         $sth->setFetchMode(PDO::FETCH_ASSOC);
 
         $sth->bindValue(':name', $name, PDO::PARAM_STR);
+        $sth->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $sth->bindValue(':limit', $productsInRow, PDO::PARAM_INT);
+
+
         $sth->execute();
 
         $i = 0;
@@ -228,5 +236,101 @@ class Product {
         endif;
     }
     
+    /**
+     * to count a number of products of the main category
+     * 
+     * @param string $name
+     * @return integer
+     */
+    public static function countProductsInMainCategory(string $name) {
+        $con = DbConnect::connect();
+        
+        $query = 'SELECT count(product.id) FROM product INNER JOIN category ON '
+                . 'product.main_category_id = category.id WHERE category.title = :name';
+        $sth = $con->prepare($query);
+       
+        $sth->bindValue(':name', $name, PDO::PARAM_STR);
+        $sth->execute();
+        $result = $sth->fetchColumn();
+        
+        return $result;
+    }
     
+    public static function NgetProductsByCategoryWithinMainCategory(int $id, string $mainCategoryName, int $pageNum = 1) {
+
+        $con = DbConnect::connect();
+        $mainCategoryId = Category::getCategoryByName($mainCategoryName)['id'];
+        
+        $productsInRow = 3;
+        $offset = ($pageNum-1)*$productsInRow;
+        
+        $ids = Category::getFinalCategoriesIds($id);
+        
+        //prepare an argument for the IN() mysql function 
+        $in = implode(', ', $ids);
+        
+        $query = 'SELECT * FROM product WHERE category_id IN('. $in . ') '
+                . 'AND main_category_id = :main_id LIMIT :limit OFFSET :offset';
+
+        $sth = $con->prepare($query);
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $sth->bindValue(':main_id', $mainCategoryId, PDO::PARAM_INT);
+        $sth->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $sth->bindValue(':limit', $productsInRow, PDO::PARAM_INT);
+
+        $sth->execute();
+        
+        $i = 0;
+        $products = array();
+
+        while ($row = $sth->fetch()) {
+            $products[$i]['id'] = $row['id'];
+            $products[$i]['title'] = $row['title'];
+            $products[$i]['code_number'] = $row['code_number'];
+            $products[$i]['price'] = $row['price'];
+            $products[$i]['category_id'] = $row['category_id'];
+            $products[$i]['brand_id'] = $row['brand_id'];
+            $products[$i]['description'] = $row['description'];
+            $products[$i]['image'] = $row['image'];
+            $products[$i]['availability'] = $row['availability'];
+            $products[$i]['is_new'] = $row['is_new'];
+            $products[$i]['product_status'] = $row['product_status'];
+            $products[$i]['main_category_id'] = $row['main_category_id'];
+            
+            $i++;
+        }
+        
+         return (is_array($products)) ? $products : false;
+    }
+    
+    /**
+     * returns the number of records in the 'product' table by category id and main category name (table 'category')
+     * 
+     * @param int $id
+     * @param string $mainCategoryName
+     * @return integer
+     */
+    public static function countProductsInCategory(int $id, string $mainCategoryName){
+        
+        $con = DbConnect::connect();
+        $mainCategoryId = Category::getCategoryByName($mainCategoryName)['id'];
+                
+        $ids = Category::getFinalCategoriesIds($id);
+        
+        //prepare an argument for the IN() mysql function 
+        $in = implode(', ', $ids);
+        
+        $query = 'SELECT count(*) FROM product WHERE category_id IN('. $in . ') '
+                . 'AND main_category_id = :main_id ';
+        
+        $sth = $con->prepare($query);
+        
+        $sth->bindValue(':main_id', $mainCategoryId, PDO::PARAM_INT);
+        $sth->execute();
+        $result = $sth->fetchColumn();
+        
+        return intval($result);
+    }
+
 }

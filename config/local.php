@@ -10,7 +10,7 @@ return [
     'pathToFooter' => ROOT . '/views/layouts/footer.php',
     'pathToFilter' => ROOT . '/views/layouts/filter.php',
     'indexRoute' => 'site/index',
-    '_404Route' => 'main/404',
+    '_404Route' => 'site/404',
     
     //connection to DATABASE (store in another file and .gitignore)
     //WARNING!!!! SENSITIVE DATA!!!!
@@ -21,5 +21,7 @@ return [
     
     //layout requirements
     'numOfNewProductsForMainPage' => 9,
-    'numOfProductsForCategoryMainPage' => 9
+    'numOfProductsForCategoryMainPage' => 9,
+    'numOfProductsForCategoryPage' => 6,
+    'elementsInRowForPageLayout' => 3,
 ];

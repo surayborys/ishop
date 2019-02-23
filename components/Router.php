@@ -1,7 +1,10 @@
 <?php
+namespace Components;
+
 /**
  * router class  
  */
+
 
 ###################################DEV MODE###############################
 class Router 
@@ -74,7 +77,10 @@ class Router
         $controllerFile = ROOT . '/controllers/' . $controller . '.php';
         if(file_exists($controllerFile)) {
             require_once ROOT . '/controllers/' . $controller . '.php';
-            $controllerObj = new $controller;
+            //join controller name with its namespace
+            $controller = '\Controllers\\' . $controller;
+             
+            $controllerObj = new $controller; 
             
             call_user_func_array(array($controllerObj, $action), $params);
             return true;
