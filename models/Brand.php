@@ -2,14 +2,16 @@
 namespace Models;
 
 use Components\DbConnect;
+use Models\BaseModel;
 use PDO;
 /**
  * A model class for the 'brand' table
  *
  * @author suray
  */
-class Brand {
+class Brand extends BaseModel {
     
+    protected static $tableName = 'brand';
     /**
      * gets all the records from the 'brand' table
      * 

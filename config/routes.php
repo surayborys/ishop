@@ -15,5 +15,7 @@ return [
     'category/([a-zA-Z0-9]+)/([0-9]+)/page-([0-9]+)' => 'category/view/$1/$2/$3',
     
     'product/([0-9]+)' => 'product/index/$1',
+    
+    'register' => 'user/register'
 ];
 
