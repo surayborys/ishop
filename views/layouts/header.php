@@ -1,4 +1,4 @@
-<!--A Design by W3layouts 
+    <!--A Design by W3layouts 
 Author: W3layout
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -62,7 +62,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <a href="checkout.html">
                                 <h3> <div class="total">
                                         <span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</div>
-                                    <img src="web/images/cart.png" alt=""/></h3>
+                                    <img src="/web/images/cart.png" alt=""/></h3>
                             </a>
                             <p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
 
