@@ -51,4 +51,38 @@ class User extends BaseModel{
         
         return (($sth->rowCount()) == 1) ? TRUE : FALSE;
     }
+    
+    /**
+     * <p>verifies, if the user with current email and password exists in the 'user' table</p>
+     * <p>returns User identity if exists an false if not</p>
+     * 
+     * @return boolean|User $this
+     */
+    public function findIdentity() {
+        
+        $con = DbConnect::connect();
+        
+        $query = 'SELECT * FROM user WHERE email = :email';
+        
+        $sth = $con->prepare($query);
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $sth->bindParam(':email', $this->email);
+        $sth->execute();
+        
+        $result = $sth->fetch();
+        
+        if (password_verify($this->password, $result['password'])) {
+            
+            $this->id = $result['id'];
+            $this->firstname = $result['firstname'];
+            $this->lastname = $result['lastname'];
+            $this->created_at = $result['created_at'];
+            $this->updated_at = $result['updated_at'];
+            $this->password = false;
+            
+            return $this;
+        }
+            return false;   
+    }
 }

@@ -16,6 +16,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+session_start();
+
 /**
  * @const ROOT determines root directory of the project
  */

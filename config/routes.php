@@ -16,6 +16,9 @@ return [
     
     'product/([0-9]+)' => 'product/index/$1',
     
-    'register' => 'user/register'
+    'register' => 'user/register',
+    'profile' => 'profile/index',
+    'login' => 'user/login',
+    'logout' => 'user/logout',
 ];
 

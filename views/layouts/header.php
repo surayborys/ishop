@@ -21,7 +21,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
         <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
         <!--fonts-->
-        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'><link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'><!--//fonts-->
         <!-- start menu -->
         <link href="/web/css/memenu.css" rel="stylesheet" type="text/css" media="all" />
@@ -49,9 +49,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                     <div class="header-left">		
                         <ul>
-                            <li ><a href="login.html"  >Login</a></li>
-                            <li><a  href="/register"  >Register</a></li>
-
+                            <?php if(isset($_SESSION['user'])):?>
+                            <li ><a href="/logout"  >Logout</a></li>
+                            <li ><a href="/profile"  >Profile</a></li>
+                            <?php endif;?>
+                            <?php if(!isset($_SESSION['user'])):?>
+                            <li ><a href="/register"  >Register</a></li>
+                            <li ><a href="/login"  >Login</a></li>
+                            <?php endif;?>
                         </ul>
                         <div class="cart box_1">
                             <a href="checkout.html">

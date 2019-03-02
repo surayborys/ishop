@@ -10,6 +10,7 @@ abstract class BaseController {
     
     //stores local settings
     protected $localSettings;
+    
     /**
      * make child classes to describe __controllerConstruct() function
      * if they do not need this - just return true in this function
