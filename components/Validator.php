@@ -53,6 +53,30 @@ class Validator {
         return ($arg1 != $arg2) ? $errText : 2;
     }
     
+    public function errorUniqueFieldExcept(string $errText, $value, string $fieldToCheck, string $targetModelClass, string $fieldExcept, $valueExcept ) {
+        require_once ROOT . '/models/' . $targetModelClass . '.php';
+        
+        $con = DbConnect::connect();
+        
+        $model = '\Models\\' . $targetModelClass;
+              
+        if($table = $model::getTable()) {
+            
+            $query = 'SELECT count(' . $fieldToCheck . ') FROM ' . $table . ' WHERE ' .
+                    $fieldToCheck . '= :value AND ' . $fieldExcept . '!= ' .$valueExcept . ';';
+            
+            $sth = $con->prepare($query);
+            $sth->bindValue(':value', $value);
+            
+            $sth->execute();
+            $result = $sth->fetchColumn();
+            
+            return ($result>=1) ? $errText : 2;
+        }
+        
+        return 'Unable to perform request';    
+    }
+    
     public function errorUniqueField(string $errText, $value, string $fieldToCheck, string $targetModelClass) {
         require_once ROOT . '/models/' . $targetModelClass . '.php';
         

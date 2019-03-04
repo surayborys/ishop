@@ -20,7 +20,7 @@ include_once $this->localSettings['pathToHeader'];
                         <span >Password</span><p style="color:red"><?=isset($errors['password']) ? $errors['password'][0] : ''?></p>
                         <input type="password" name="password" value="<?=$password?>">
                     </div>				
-                    <input type="submit" name="summit" value="Login"> 
+                    <input type="submit" name="submit" value="Login"> 
                 </form>
             </div>
             <div class="col-md-4 left-account ">

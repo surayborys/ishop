@@ -48,4 +48,16 @@ abstract class BaseController {
         
         return (is_array($optimizedArray)) ? $optimizedArray : FALSE;
     }
+    
+     /**
+     *  1.removes spaces
+     *  2.removes slashes, added with addslashes()
+     *  3.converts all aplicable characters
+     */
+     protected function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 }

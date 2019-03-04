@@ -30,7 +30,11 @@ class UserController extends BaseController {
      * @return boolean
      */
     public function actionRegister() {
-
+        if($this->checkCurrentUser()) {
+            $this->actionLogout();
+            return false;
+        }
+        
         $mainCategories = $this->mainCategories;
         $brands = $this->brands;
 
@@ -94,6 +98,10 @@ class UserController extends BaseController {
      */
     public function actionLogin($email = '', $password = '', $post = 1) {
 
+        if($this->checkCurrentUser()) {
+            return false;
+        }
+        
         $mainCategories = $this->mainCategories;
         $brands = $this->brands;
 
@@ -132,15 +140,15 @@ class UserController extends BaseController {
         header('location: /');
         return true;
     }
+    
     /**
-     *  1.removes spaces
-     *  2.removes slashes, added with addslashes()
-     *  3.converts all aplicable characters
+     * checks if the user is logged in
+     * returns true if the user is logged in and false otherwise
+     * @return boolean
      */
-    private function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+    private function checkCurrentUser(){
+        return isset($_SESSION['user']);
     }
+    
+   
 }

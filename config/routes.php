@@ -18,6 +18,8 @@ return [
     
     'register' => 'user/register',
     'profile' => 'profile/index',
+    'profile/update' => 'profile/update',
+    'profile/changepass' => 'profile/updatePassword',
     'login' => 'user/login',
     'logout' => 'user/logout',
 ];

@@ -85,4 +85,95 @@ class User extends BaseModel{
         }
             return false;   
     }
+    
+    public function updateProfile() {
+        
+        $con = DbConnect::connect();
+        
+        $query = 'UPDATE user SET'
+                . ' firstname = :firstname,'
+                . ' lastname =  :lastname,'
+                . ' email = :email'
+                . ' WHERE id = :id';
+        
+        $sth = $con->prepare($query);
+        $sth->bindValue(':firstname', $this->firstname, PDO::PARAM_STR);
+        $sth->bindValue(':lastname', $this->lastname, PDO::PARAM_STR);
+        $sth->bindValue(':email', $this->email, PDO::PARAM_STR);
+        $sth->bindValue(':id', $this->id, PDO::PARAM_INT);
+        
+        return $sth->execute() ? true : false;
+    }
+    
+    public function updatePassword() {
+        
+        $con = DbConnect::connect();
+        
+        $query = 'UPDATE user SET'
+                . ' password = :password'
+                . ' WHERE id = :id;';
+        
+        $sth = $con->prepare($query);
+        $sth->bindValue(':password', $this->password, PDO::PARAM_STR);
+        $sth->bindValue(':id', $this->id, PDO::PARAM_INT);
+        
+        return $sth->execute() ? true : false;
+    }
+    
+    public function getUserById($userID) {
+        
+        $con = DbConnect::connect();
+        
+        if($this->countUserById($userID) == 0) {
+            return false;
+        }
+        
+        $query = 'SELECT firstname, lastname, email FROM user WHERE id = :id';
+        
+        $sth = $con->prepare($query);
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $sth->bindValue(':id', $userID);
+        $sth->execute();
+        
+        if($user = $sth->fetch()) {
+             $this->firstname = $user['firstname'];
+             $this->lastname = $user['lastname'];
+             $this->email = $user['email'];
+             
+             return $this;
+        }
+        
+        return false;
+    }
+    
+    private function countUserById($userID) {
+        $con = DbConnect::connect();
+        
+        $query = 'SELECT COUNT(*) FROM user WHERE id = :id';
+        $sth = $con->prepare($query);
+        $sth->bindValue(":id", $userID);
+        
+        $sth->execute();
+        $result = $sth->fetchColumn();
+        
+        return $result;
+    }
+    
+    public static function verifyPassword($userID, $password){
+        
+        $con = DbConnect::connect();
+        $query = 'SELECT password FROM user WHERE id = :id';
+        
+        $sth = $con->prepare($query);
+        $sth->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $sth->bindValue(':id', $userID);
+        $sth->execute();
+        
+        $result = $sth->fetch();
+        $hash = $result['password'];
+        
+        return password_verify($password, $hash);
+    }
 }
